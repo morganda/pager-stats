@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const cloudServiceName = "External Monitoring for Cloud"
+const policyName = "Cloud SaaS Incident Management"
 
 // Strings to match on a page
 const outOfCapacity = "is running low on spare capacity"
@@ -25,7 +25,7 @@ const incidents = "Cloudbot's created a new incident"
 type pageInfo struct {
 	PageNumber  string
 	Description string
-	ServiceName string
+	PolicyName  string
 	CreatedOn   string
 }
 
@@ -34,7 +34,7 @@ func extractPage(rawPageInfo []string) pageInfo {
 	ii := pageInfo{
 		PageNumber:  rawPageInfo[1],
 		Description: rawPageInfo[2],
-		ServiceName: rawPageInfo[4],
+		PolicyName:  rawPageInfo[6],
 		CreatedOn:   rawPageInfo[7],
 	}
 	return ii
@@ -50,7 +50,7 @@ func extractPageInfo(csvReader *csv.Reader) []pageInfo {
 			log.Fatal(error)
 		}
 		page := extractPage(line)
-		if page.ServiceName == cloudServiceName {
+		if page.PolicyName == policyName {
 			pageInfos = append(pageInfos, page)
 		}
 	}
