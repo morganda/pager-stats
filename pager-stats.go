@@ -15,7 +15,7 @@ const cloudServiceName = "External Monitoring for Cloud"
 // Strings to match on a page
 const outOfCapacity = "is running low on spare capacity"
 const ctorOutOfCapacity = "has logged a NotEnoughCapacity"
-const allocatorsDown = "Website | Your site 'Allocators: production"
+const allocatorsDown = "Website | Your site 'Allocators:"
 const loggingDown = "Website | Your site 'Logging: production"
 const metricsDown = "Website | Your site 'Metrics: production"
 const indexFreshness = "Index freshness alert"
