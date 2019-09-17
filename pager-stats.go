@@ -21,6 +21,7 @@ const metricsDown = "Website | Your site 'Metrics: production"
 const indexFreshness = "Index freshness alert"
 const terminatedOnHostError = "Instance(s) Terminated on Host Error"
 const incidents = "Cloudbot's created a new incident"
+const zookeeperDisk = "Sent bytes for cloud-production-168820 director"
 
 type pageInfo struct {
 	PageNumber  string
@@ -74,9 +75,10 @@ func printPageStats(pageInfos []pageInfo) {
 	fmt.Printf("Total Capacity Alerts: %d\n", ooc+ctorooc)
 	fmt.Printf("Out of Capacity Alerts: %d\n", ooc)
 	fmt.Printf("Ctor Out of Capacity Alerts: %d\n", ctorooc)
+	fmt.Printf("Total Zookeeper Disk Alerts: %d\n", getMatchPageCount(pageInfos, zookeeperDisk))
 	fmt.Printf("Bad Allocators: %d\n", getMatchPageCount(pageInfos, allocatorsDown))
-	fmt.Printf("Total Incidents: %d\n", getMatchPageCount(pageInfos, incidents))
 	fmt.Printf("Allocators on Old Templates: %d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
+	fmt.Printf("Total Incidents: %d\n", getMatchPageCount(pageInfos, incidents))
 	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown)
 	fmt.Printf("Total Logging/Metrics: %d\n", loggingMetricsDown)
 	fmt.Printf("Total Index Freshness: %d\n", getMatchPageCount(pageInfos, indexFreshness))
