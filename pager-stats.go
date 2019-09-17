@@ -21,6 +21,7 @@ const metricsDown = "Website | Your site 'Metrics: production"
 const indexFreshness = "Index freshness alert"
 const terminatedOnHostError = "Instance(s) Terminated on Host Error"
 const incidents = "Cloudbot's created a new incident"
+const zookeeperDisk = "Sent bytes for cloud-production-168820 director"
 
 type pageInfo struct {
 	PageNumber  string
@@ -80,6 +81,7 @@ func printPageStats(pageInfos []pageInfo) {
 	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown)
 	fmt.Printf("Total Logging/Metrics: %d\n", loggingMetricsDown)
 	fmt.Printf("Total Index Freshness: %d\n", getMatchPageCount(pageInfos, indexFreshness))
+	fmt.Printf("Total Zookeeper Disk Alerts: %d\n", getMatchPageCount(pageInfos, zookeeperDisk))
 }
 
 func main() {
