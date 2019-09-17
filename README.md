@@ -1,4 +1,6 @@
 
 # Setup
-1. Download a csv from PagerDuty listing notifications that fired over a time period.
-2. go 
+1. go get github.com/morganda/pager-stats
+2. go install $GOPATH/src/github.com/morganda/pager-stats
+3. Download notifications csv from PagerDuty
+4. Test Run `pager-stats path/to/file.csv`
