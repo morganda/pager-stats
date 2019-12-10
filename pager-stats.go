@@ -14,6 +14,9 @@ const policyName = "Cloud SaaS Incident Management"
 
 // Strings to match on a page
 const outOfCapacity = "is running low on spare capacity"
+const outOfCapacityGCP = "Instance family gcp."
+const outOfCapacityAzure = "Instance family azure."
+const outOfCapacityIBM = "Instance family ibm."
 const ctorOutOfCapacity = "has logged a NotEnoughCapacity"
 const allocatorsDown = "Website | Your site 'Allocators:"
 const loggingDown = "Website | Your site 'Logging: production"
@@ -71,9 +74,16 @@ func getMatchPageCount(pageInfos []pageInfo, descriptionMatch string) int {
 func printPageStats(pageInfos []pageInfo) {
 	fmt.Printf("Total Alerts: %d\n", len(pageInfos))
 	ooc := getMatchPageCount(pageInfos, outOfCapacity)
+	oocgcp := getMatchPageCount(pageInfos, outOfCapacityGCP)
+	oocazure := getMatchPageCount(pageInfos, outOfCapacityAzure)
+	oocibm := getMatchPageCount(pageInfos, outOfCapacityIBM)
 	ctorooc := getMatchPageCount(pageInfos, ctorOutOfCapacity)
 	fmt.Printf("Total Capacity Alerts: %d\n", ooc+ctorooc)
 	fmt.Printf("Out of Capacity Alerts: %d\n", ooc)
+	fmt.Printf("Out of Capacity Alerts GCP: %d\n", oocgcp)
+	fmt.Printf("Out of Capacity Alerts Azure: %d\n", oocazure)
+	fmt.Printf("Out of Capacity Alerts IBM: %d\n", oocibm)
+	fmt.Printf("Out of Capacity Alerts AWS: %d\n", ooc - oocgcp - oocazure - oocibm)
 	fmt.Printf("Ctor Out of Capacity Alerts: %d\n", ctorooc)
 	fmt.Printf("Total Zookeeper Disk Alerts: %d\n", getMatchPageCount(pageInfos, zookeeperDisk))
 	fmt.Printf("Bad Allocators: %d\n", getMatchPageCount(pageInfos, allocatorsDown))
