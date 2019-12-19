@@ -21,6 +21,7 @@ const ctorOutOfCapacity = "has logged a NotEnoughCapacity"
 const allocatorsDown = "Website | Your site 'Allocators:"
 const loggingDown = "Website | Your site 'Logging: production"
 const metricsDown = "Website | Your site 'Metrics: production"
+const othersDown = "went down"
 const indexFreshness = "Index freshness alert"
 const terminatedOnHostError = "Instance(s) Terminated on Host Error"
 const incidents = "Cloudbot's created a new incident"
@@ -78,6 +79,8 @@ func printPageStats(pageInfos []pageInfo) {
 	oocazure := getMatchPageCount(pageInfos, outOfCapacityAzure)
 	oocibm := getMatchPageCount(pageInfos, outOfCapacityIBM)
 	ctorooc := getMatchPageCount(pageInfos, ctorOutOfCapacity)
+	othersdown := getMatchPageCount(pageInfos, othersDown)
+	allocatorsdown := getMatchPageCount(pageInfos, allocatorsDown)
 	fmt.Printf("Total Capacity Alerts: %d\n", ooc+ctorooc)
 	fmt.Printf("Out of Capacity Alerts: %d\n", ooc)
 	fmt.Printf("Out of Capacity Alerts GCP: %d\n", oocgcp)
@@ -86,12 +89,13 @@ func printPageStats(pageInfos []pageInfo) {
 	fmt.Printf("Out of Capacity Alerts AWS: %d\n", ooc - oocgcp - oocazure - oocibm)
 	fmt.Printf("Ctor Out of Capacity Alerts: %d\n", ctorooc)
 	fmt.Printf("Total Zookeeper Disk Alerts: %d\n", getMatchPageCount(pageInfos, zookeeperDisk))
-	fmt.Printf("Bad Allocators: %d\n", getMatchPageCount(pageInfos, allocatorsDown))
+	fmt.Printf("Bad Allocators: %d\n", allocatorsdown)
 	fmt.Printf("Allocators on Old Templates: %d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
 	fmt.Printf("Total Incidents: %d\n", getMatchPageCount(pageInfos, incidents))
 	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown)
 	fmt.Printf("Total Logging/Metrics: %d\n", loggingMetricsDown)
 	fmt.Printf("Total Index Freshness: %d\n", getMatchPageCount(pageInfos, indexFreshness))
+	fmt.Printf("Non-allocator-failures: %d\n", othersdown-loggingMetricsDown-allocatorsdown)
 }
 
 func main() {
