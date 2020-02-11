@@ -19,9 +19,11 @@ const outOfCapacityAzure = "Instance family azure."
 const outOfCapacityIBM = "Instance family ibm."
 const ctorOutOfCapacity = "has logged a NotEnoughCapacity"
 const allocatorsDown = "Website | Your site 'Allocators:"
+const esspallocatorsDown = "for check 'Allocators'"
 const loggingDown = "Website | Your site 'Logging: production"
 const metricsDown = "Website | Your site 'Metrics: production"
 const othersDown = "went down"
+const esspothersDown = "Heartbeat Alert"
 const indexFreshness = "Index freshness alert"
 const terminatedOnHostError = "Instance(s) Terminated on Host Error"
 const incidents = "Cloudbot's created a new incident"
@@ -80,7 +82,11 @@ func printPageStats(pageInfos []pageInfo) {
 	oocibm := getMatchPageCount(pageInfos, outOfCapacityIBM)
 	ctorooc := getMatchPageCount(pageInfos, ctorOutOfCapacity)
 	othersdown := getMatchPageCount(pageInfos, othersDown)
+	esspothersdown := getMatchPageCount(pageInfos, esspothersDown)
 	allocatorsdown := getMatchPageCount(pageInfos, allocatorsDown)
+	esspallocatorsdown := getMatchPageCount(pageInfos, esspallocatorsDown)
+	alldown := othersdown + esspothersdown
+	allallocators := esspallocatorsdown + allocatorsdown
 	fmt.Printf("Total Capacity Alerts: %d\n", ooc+ctorooc)
 	fmt.Printf("Out of Capacity Alerts: %d\n", ooc)
 	fmt.Printf("Out of Capacity Alerts GCP: %d\n", oocgcp)
@@ -89,13 +95,13 @@ func printPageStats(pageInfos []pageInfo) {
 	fmt.Printf("Out of Capacity Alerts AWS: %d\n", ooc - oocgcp - oocazure - oocibm)
 	fmt.Printf("Ctor Out of Capacity Alerts: %d\n", ctorooc)
 	fmt.Printf("Total Zookeeper Disk Alerts: %d\n", getMatchPageCount(pageInfos, zookeeperDisk))
-	fmt.Printf("Bad Allocators: %d\n", allocatorsdown)
+	fmt.Printf("Bad Allocators: %d\n", allocatorsdown + esspallocatorsdown)
 	fmt.Printf("Allocators on Old Templates: %d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
 	fmt.Printf("Total Incidents: %d\n", getMatchPageCount(pageInfos, incidents))
 	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown)
 	fmt.Printf("Total Logging/Metrics: %d\n", loggingMetricsDown)
 	fmt.Printf("Total Index Freshness: %d\n", getMatchPageCount(pageInfos, indexFreshness))
-	fmt.Printf("Non-allocator-failures: %d\n", othersdown-loggingMetricsDown-allocatorsdown)
+	fmt.Printf("Non-allocator-failures: %d\n", alldown-loggingMetricsDown-allallocators)
 }
 
 func main() {
