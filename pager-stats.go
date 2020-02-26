@@ -18,7 +18,8 @@ const outOfCapacityGCP = "Instance family gcp."
 const outOfCapacityAzure = "Instance family azure."
 const outOfCapacityIBM = "Instance family ibm."
 const ctorOutOfCapacity = "has logged a NotEnoughCapacity"
-const allocatorsDown = "Soteria detected that the allocator"
+const allocatorsDown = "Website | Your site 'Allocators:"
+const soteriaallocatorsDown = "Soteria :: Allocator is Unhealthy"
 const esspallocatorsDown = "for check 'Allocators'"
 const loggingDown = "Website | Your site 'Logging:"
 const metricsDown = "Website | Your site 'Metrics:"
@@ -85,9 +86,10 @@ func printPageStats(pageInfos []pageInfo) {
 	othersdown := getMatchPageCount(pageInfos, othersDown)
 	esspothersdown := getMatchPageCount(pageInfos, esspothersDown)
 	allocatorsdown := getMatchPageCount(pageInfos, allocatorsDown)
+	soteriaallocatorsdown := getMatchPageCount(pageInfos, soteriaallocatorsDown)
 	esspallocatorsdown := getMatchPageCount(pageInfos, esspallocatorsDown)
 	alldown := othersdown + esspothersdown
-	allallocators := esspallocatorsdown + allocatorsdown
+	allallocators := esspallocatorsdown + allocatorsdown + soteriaallocatorsdown
 	fmt.Printf("Total Capacity Alerts: %d\n", ooc+ctorooc)
 	fmt.Printf("Out of Capacity Alerts: %d\n", ooc)
 	fmt.Printf("Out of Capacity Alerts GCP: %d\n", oocgcp)
@@ -96,7 +98,8 @@ func printPageStats(pageInfos []pageInfo) {
 	fmt.Printf("Out of Capacity Alerts AWS: %d\n", ooc - oocgcp - oocazure - oocibm)
 	fmt.Printf("Ctor Out of Capacity Alerts: %d\n", ctorooc)
 	fmt.Printf("Total Zookeeper Disk Alerts: %d\n", getMatchPageCount(pageInfos, zookeeperDisk))
-	fmt.Printf("Bad Allocators: %d\n", allocatorsdown + esspallocatorsdown)
+	fmt.Printf("Bad Allocators: %d\n", allallocators)
+	fmt.Printf("Bad Allocators (soteria): %d\n", soteriaallocatorsdown)
 	fmt.Printf("Allocators on Old Templates: %d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
 	fmt.Printf("Total Incidents: %d\n", getMatchPageCount(pageInfos, incidents))
 	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown) + getMatchPageCount(pageInfos, monitorDown)
