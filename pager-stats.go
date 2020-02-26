@@ -20,8 +20,9 @@ const outOfCapacityIBM = "Instance family ibm."
 const ctorOutOfCapacity = "has logged a NotEnoughCapacity"
 const allocatorsDown = "Website | Your site 'Allocators:"
 const esspallocatorsDown = "for check 'Allocators'"
-const loggingDown = "Website | Your site 'Logging: production"
-const metricsDown = "Website | Your site 'Metrics: production"
+const loggingDown = "Website | Your site 'Logging:"
+const metricsDown = "Website | Your site 'Metrics:"
+const monitorDown = "Website | Your site 'Monitor:"
 const othersDown = "went down"
 const esspothersDown = "Heartbeat Alert"
 const indexFreshness = "Index freshness alert"
@@ -98,7 +99,7 @@ func printPageStats(pageInfos []pageInfo) {
 	fmt.Printf("Bad Allocators: %d\n", allocatorsdown + esspallocatorsdown)
 	fmt.Printf("Allocators on Old Templates: %d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
 	fmt.Printf("Total Incidents: %d\n", getMatchPageCount(pageInfos, incidents))
-	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown)
+	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown) + getMatchPageCount(pageInfos, monitorDown)
 	fmt.Printf("Total Logging/Metrics: %d\n", loggingMetricsDown)
 	fmt.Printf("Total Index Freshness: %d\n", getMatchPageCount(pageInfos, indexFreshness))
 	fmt.Printf("Non-allocator-failures: %d\n", alldown-loggingMetricsDown-allallocators)
