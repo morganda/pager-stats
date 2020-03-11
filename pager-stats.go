@@ -74,7 +74,6 @@ func getMatchPageCount(pageInfos []pageInfo, descriptionMatch string) int {
 }
 
 func printPageStats(pageInfos []pageInfo) {
-	fmt.Printf("Total Alerts: %d\n", len(pageInfos))
 	oldctorooc := getMatchPageCount(pageInfos, oldctorOutOfCapacity)
 	ctorooc := getMatchPageCount(pageInfos, ctorOutOfCapacity)
 	othersdown := getMatchPageCount(pageInfos, othersDown)
@@ -84,16 +83,10 @@ func printPageStats(pageInfos []pageInfo) {
 	esspallocatorsdown := getMatchPageCount(pageInfos, esspallocatorsDown)
 	alldown := othersdown + esspothersdown
 	allallocators := esspallocatorsdown + allocatorsdown + soteriaallocatorsdown
-	fmt.Printf("Ctor Out of Capacity Alerts: %d\n", ctorooc+oldctorooc)
-	fmt.Printf("Total Zookeeper Disk Alerts: %d\n", getMatchPageCount(pageInfos, zookeeperDisk))
-	fmt.Printf("Bad Allocators: %d\n", allallocators)
-	fmt.Printf("Bad Allocators (soteria): %d\n", soteriaallocatorsdown)
-	fmt.Printf("Allocators on Old Templates: %d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
-	fmt.Printf("Total Incidents: %d\n", getMatchPageCount(pageInfos, incidents))
 	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown) + getMatchPageCount(pageInfos, monitorDown)
-	fmt.Printf("Total Logging/Metrics: %d\n", loggingMetricsDown)
-	fmt.Printf("Total Index Freshness: %d\n", getMatchPageCount(pageInfos, indexFreshness))
-	fmt.Printf("Non-allocator-failures: %d\n", alldown-loggingMetricsDown-allallocators)
+
+	template := "%d pages in the past month, which break down to %d related to capacity (0 needing more capacity, %d constructor out of capacity), %d pages for failed allocators, %d GCP allocators rebuilt with old templates, %d pages for incidents, %d for logging or metrics down, %d for index freshness and %d pages for non-allocator host failures.\n"
+	fmt.Printf(template, len(pageInfos), ctorooc+oldctorooc, ctorooc+oldctorooc, allallocators, getMatchPageCount(pageInfos, terminatedOnHostError), getMatchPageCount(pageInfos, incidents), loggingMetricsDown, getMatchPageCount(pageInfos, indexFreshness), alldown-loggingMetricsDown-allallocators)
 }
 
 func main() {
