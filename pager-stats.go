@@ -82,11 +82,12 @@ func printPageStats(pageInfos []pageInfo) {
 	soteriaallocatorsdown := getMatchPageCount(pageInfos, soteriaallocatorsDown)
 	esspallocatorsdown := getMatchPageCount(pageInfos, esspallocatorsDown)
 	alldown := othersdown + esspothersdown
-	allallocators := esspallocatorsdown + allocatorsdown + soteriaallocatorsdown
+	nonsoteriaallocatorsdown := esspallocatorsdown + allocatorsdown
+	allallocators := nonsoteriaallocatorsdown + soteriaallocatorsdown
 	loggingMetricsDown := getMatchPageCount(pageInfos, loggingDown) + getMatchPageCount(pageInfos, metricsDown) + getMatchPageCount(pageInfos, monitorDown)
 
 	template := "%d pages in the past month, which break down to %d related to capacity (0 needing more capacity, %d constructor out of capacity), %d pages for failed allocators, %d GCP allocators rebuilt with old templates, %d pages for incidents, %d for logging or metrics down, %d for index freshness and %d pages for non-allocator host failures.\n"
-	fmt.Printf(template, len(pageInfos), ctorooc+oldctorooc, ctorooc+oldctorooc, allallocators, getMatchPageCount(pageInfos, terminatedOnHostError), getMatchPageCount(pageInfos, incidents), loggingMetricsDown, getMatchPageCount(pageInfos, indexFreshness), alldown-loggingMetricsDown-allallocators)
+	fmt.Printf(template, len(pageInfos), ctorooc+oldctorooc, ctorooc+oldctorooc, allallocators, getMatchPageCount(pageInfos, terminatedOnHostError), getMatchPageCount(pageInfos, incidents), loggingMetricsDown, getMatchPageCount(pageInfos, indexFreshness), alldown-loggingMetricsDown-nonsoteriaallocatorsdown)
 }
 
 func main() {
