@@ -88,6 +88,18 @@ func printPageStats(pageInfos []pageInfo) {
 
 	template := "%d pages in the past month, which break down to %d related to capacity (0 needing more capacity, %d constructor out of capacity), %d pages for failed allocators, %d GCP allocators rebuilt with old templates, %d pages for incidents, %d for logging or metrics down, %d for index freshness and %d pages for non-allocator host failures.\n"
 	fmt.Printf(template, len(pageInfos), ctorooc+oldctorooc, ctorooc+oldctorooc, allallocators, getMatchPageCount(pageInfos, terminatedOnHostError), getMatchPageCount(pageInfos, incidents), loggingMetricsDown, getMatchPageCount(pageInfos, indexFreshness), alldown-loggingMetricsDown-nonsoteriaallocatorsdown)
+
+	fmt.Printf("\n\nCopy the following into a spreadsheet to create a pretty piechart graph. It should paste cleanly into separate cells.\n\n")
+	fmt.Printf("Total Alerts:\t%d\n", len(pageInfos))
+	fmt.Printf("Ctor Out of Capacity Alerts:\t%d\n", ctorooc+oldctorooc)
+	fmt.Printf("Total Zookeeper Disk Alerts:\t%d\n", getMatchPageCount(pageInfos, zookeeperDisk))
+	fmt.Printf("Bad Allocators:\t%d\n", allallocators)
+	fmt.Printf("Bad Allocators (soteria):\t%d\n", soteriaallocatorsdown)
+	fmt.Printf("Allocators on Old Templates:\t%d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
+	fmt.Printf("Total Incidents:\t%d\n", getMatchPageCount(pageInfos, incidents))
+	fmt.Printf("Total Logging/Metrics:\t%d\n", loggingMetricsDown)
+	fmt.Printf("Total Index Freshness:\t%d\n", getMatchPageCount(pageInfos, indexFreshness))
+	fmt.Printf("Non-allocator-failures:\t%d\n", alldown-loggingMetricsDown-nonsoteriaallocatorsdown)
 }
 
 func main() {
