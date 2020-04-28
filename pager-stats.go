@@ -94,7 +94,6 @@ func printPageStats(pageInfos []pageInfo) {
 	fmt.Printf("Ctor Out of Capacity Alerts:\t%d\n", ctorooc+oldctorooc)
 	fmt.Printf("Total Zookeeper Disk Alerts:\t%d\n", getMatchPageCount(pageInfos, zookeeperDisk))
 	fmt.Printf("Bad Allocators:\t%d\n", allallocators)
-	fmt.Printf("Bad Allocators (soteria):\t%d\n", soteriaallocatorsdown)
 	fmt.Printf("Allocators on Old Templates:\t%d\n", getMatchPageCount(pageInfos, terminatedOnHostError))
 	fmt.Printf("Total Incidents:\t%d\n", getMatchPageCount(pageInfos, incidents))
 	fmt.Printf("Total Logging/Metrics:\t%d\n", loggingMetricsDown)
